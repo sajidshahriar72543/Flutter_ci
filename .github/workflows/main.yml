@@ -28,6 +28,9 @@ jobs:
       - uses: actions/setup-java@v1
         with:
           java-version: "12.x"
+          artifacts: "build/app/outputs/apk/debug/*"
+          tag: v1.0.${{ github.run_number }}
+          token: ${{ secrets.TOKEN }}
       - uses: subosito/flutter-action@v1
         with:
           channel: "stable"
