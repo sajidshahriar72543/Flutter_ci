@@ -3,12 +3,14 @@ on:
   push:
     branches:
       - master
-      - wipp
+      - main
 
 jobs:
   flutter_test:
     name: Setting up things
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-java@v1
@@ -28,13 +30,16 @@ jobs:
       - uses: actions/setup-java@v1
         with:
           java-version: "12.x"
-          artifacts: "build/app/outputs/apk/debug/*"
-          tag: v1.0.${{ github.run_number }}
-          token: ${{ secrets.TOKEN }}
       - uses: subosito/flutter-action@v1
         with:
           channel: "stable"
       - run: flutter pub get
       - run: flutter clean
-      # - run: flutter build appbundle
-      - run: flutter build appbundle --target-platform android-arm,android-arm64
+      - run: flutter build apk --target-platform android-arm,android-arm64,android-x64 --split-per-abi
+      - name: Push to Releases
+        id: create-new-release
+        uses: ncipollo/release-action@v1.10.0
+        with:
+          artifacts: "build/app/outputs/apk/release/*.apk"
+          tag: v1.0.${{ github.run_number }}
+          token: ${{ secrets.TOKEN }}
