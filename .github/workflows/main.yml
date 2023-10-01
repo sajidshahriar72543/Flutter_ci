@@ -1,10 +1,9 @@
 name: Flutter CI
-on:
+'on':
   push:
     branches:
       - master
       - main
-
 jobs:
   TESTING:
     name: Setting up the environment
@@ -15,13 +14,12 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions/setup-java@v1
         with:
-          java-version: "12.x"
+          java-version: 12.x
       - uses: subosito/flutter-action@v1
         with:
-          channel: "stable"
+          channel: stable
       - run: flutter clean
       - run: flutter pub get
-
   BUILDING_THE_APP:
     name: Build for Android
     runs-on: ubuntu-latest
@@ -29,10 +27,10 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions/setup-java@v1
         with:
-          java-version: "12.x"
+          java-version: 12.x
       - uses: subosito/flutter-action@v1
         with:
-          channel: "stable"
+          channel: stable
       - run: flutter pub get
       - run: flutter clean
       - run: flutter build apk --release --target-platform android-arm64
@@ -40,6 +38,6 @@ jobs:
         id: create-new-release
         uses: ncipollo/release-action@v1.10.0
         with:
-          artifacts: "build/app/outputs/apk/release/*.apk"
-          tag: v1.0.${{ github.run_number }}
-          token: ${{ secrets.TOKEN }}
+          artifacts: build/app/outputs/apk/release/*.apk
+          tag: 'v1.0.${{ github.run_number }}'
+          token: '${{ secrets.TOKEN }}'
