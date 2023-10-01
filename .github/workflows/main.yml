@@ -6,8 +6,8 @@ on:
       - main
 
 jobs:
-  flutter_test:
-    name: Setting up things
+  TESTING:
+    name: Setting up the environment
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -22,8 +22,8 @@ jobs:
       - run: flutter clean
       - run: flutter pub get
 
-  build_app:
-    name: Build Flutter (Android)
+  BUILD_APP:
+    name: Build For Android
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
