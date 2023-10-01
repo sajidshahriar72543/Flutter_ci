@@ -35,7 +35,7 @@ jobs:
           channel: "stable"
       - run: flutter pub get
       - run: flutter clean
-      - run: flutter build apk --target-platform android-arm,android-arm64,android-x64 --split-per-abi
+      - run: flutter build apk --release --target-platform android-arm64
       - name: Push to Releases
         id: create-new-release
         uses: ncipollo/release-action@v1.10.0
