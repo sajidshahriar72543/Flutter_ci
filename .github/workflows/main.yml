@@ -1,36 +1,43 @@
 name: Flutter CI
-'on':
+
+on:
   push:
     branches:
       - master
       - main
+
 jobs:
   TESTING:
     name: Setting up the environment
-    runs-on: ubuntu-latest
+    runs-on: arch-latest
     permissions:
       contents: write
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-java@v1
-        with:
-          java-version: 12.x
-      - uses: subosito/flutter-action@v1
-        with:
-          channel: stable
+      - name: Set up Java
+        run: |
+          sudo pacman -Sy --noconfirm jdk12-openjdk
+      - name: Set up Flutter
+        run: |
+          sudo pacman -Sy --noconfirm flutter
+          flutter config --no-analytics
+          flutter precache
       - run: flutter clean
       - run: flutter pub get
+
   BUILDING_THE_APP:
     name: Build for Android
-    runs-on: ubuntu-latest
+    runs-on: arch-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-java@v1
-        with:
-          java-version: 12.x
-      - uses: subosito/flutter-action@v1
-        with:
-          channel: stable
+      - name: Set up Java
+        run: |
+          sudo pacman -Sy --noconfirm jdk12-openjdk
+      - name: Set up Flutter
+        run: |
+          sudo pacman -Sy --noconfirm flutter
+          flutter config --no-analytics
+          flutter precache
       - run: flutter pub get
       - run: flutter clean
       - run: flutter build apk --release --target-platform android-arm64
